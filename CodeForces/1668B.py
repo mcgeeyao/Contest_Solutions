@@ -14,4 +14,3 @@ for case in range(t):
     else:
         print('YES')
     
-    
