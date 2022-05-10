@@ -5,6 +5,11 @@
         "iosfwd": "cpp",
         "unordered_map": "cpp",
         "__hash_table": "cpp",
-        "algorithm": "cpp"
+        "algorithm": "cpp",
+        "iterator": "cpp",
+        "random": "cpp",
+        "__locale": "cpp",
+        "ios": "cpp",
+        "ostream": "cpp"
     }
 }
