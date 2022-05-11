@@ -1,0 +1,1 @@
+The repository contains my solutions to competitions such like Codeforces and Codejam.
