@@ -10,9 +10,6 @@ for case in range(t):
     s = input()
     print(sol(arr, n))
 
-
-
-
 # Binary Index Tree
 class BIT:
     def __init__(self, n):

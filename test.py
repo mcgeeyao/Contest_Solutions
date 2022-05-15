@@ -26,6 +26,6 @@ def fn3(n, i):
         res += 1 / curr
         curr += 1
     return res
-
-for i in range(10, 10000):
-    print(i, fn1(i, 1) + fn2(i, 1) + fn3(i, 1))
+x = 3
+for i in range(500*x, 10000*x, 500*x):
+    print(i, fn1(i, x) + fn2(i, x) + fn3(i, x))

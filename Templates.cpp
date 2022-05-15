@@ -13,24 +13,24 @@
 
 using namespace std;
 
-int main(){
-    cout.sync_with_stdio(false);
-    cin.tie(nullptr);
-    int t;
-    cin >> t;
-    while (t--){
-        int n, k, res;
-        ll l;
-        char c;
-        string s;
-        cin >> n;
-        vector<int> arr(n);
-        for (int i = 0; i < n; ++i) cin >> arr[i];
+// int main(){
+//     cout.sync_with_stdio(false);
+//     cin.tie(nullptr);
+//     int t;
+//     cin >> t;
+//     while (t--){
+//         int n, k, res;
+//         ll l;
+//         char c;
+//         string s;
+//         cin >> n;
+//         vector<int> arr(n);
+//         for (int i = 0; i < n; ++i) cin >> arr[i];
 
-        cout << res << endl;
-    }
-    return 0;
-}
+//         cout << res << endl;
+//     }
+//     return 0;
+// }
 
 
 // Binary Index Tree
