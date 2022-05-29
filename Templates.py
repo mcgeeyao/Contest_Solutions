@@ -105,8 +105,8 @@ class Segment_Tree():
         return
     def push_up(self, ind):
         self.Nodes[ind].sum = self.Nodes[(ind << 1) + 1].sum + self.Nodes[(ind << 1) + 2].sum
-        self.Nodes[ind].min = min(self.Nodes[(ind << 1) + 1].sum, self.Nodes[(ind << 1) + 2].sum)
-        self.Nodes[ind].max = max(self.Nodes[(ind << 1) + 1].sum, self.Nodes[(ind << 1) + 2].sum)
+        self.Nodes[ind].min = min(self.Nodes[(ind << 1) + 1].min, self.Nodes[(ind << 1) + 2].min)
+        self.Nodes[ind].max = max(self.Nodes[(ind << 1) + 1].max, self.Nodes[(ind << 1) + 2].max)
         
     def push_down(self, ind):
         if not self.lazy[ind]: return
@@ -119,6 +119,8 @@ class Segment_Tree():
         self.Nodes[(ind << 1) + 2].min = self.Nodes[ind].min
         
         self.lazy[ind] = False
+        self.lazy[(ind << 1) + 1] = True
+        self.lazy[(ind << 1) + 2] = True
     
     def update(self, val, l, r=-1):
         if r >= 0:

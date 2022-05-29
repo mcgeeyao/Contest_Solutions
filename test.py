@@ -43,6 +43,6 @@ def fn5(n, i):
         curr += 1
     return res
 
-x = 1
-for i in range(500*x, 1000000*x, 500*x):
+x = 20
+for i in range(500*x, 10000*x, 500*x):
     print(i, fn4(i, x) + 2 * fn5(i, x))
