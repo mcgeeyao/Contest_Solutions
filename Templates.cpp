@@ -81,7 +81,8 @@ class DJS{
     
     public:
         DJS(valueType len){
-            arr = vector<valueType> (len, 0);
+            arr = vector<valueType> (len);
+            for (int i = 0; i < len; ++i) arr[i] = i;
             rank = vector<valueType> (len, 1);
         }
 
@@ -94,12 +95,14 @@ class DJS{
         valueType Union(valueType x, valueType y){
             valueType xp = find(x);
             valueType yp = find(y);
-            if (rank[xp] >= rank[yp]){
-                arr[yp] = xp;
-                rank[xp]++;
-            } else {
-                arr[xp] = yp;
-                rank[yp] ++;
+            if (xp != yp) {
+                if (rank[xp] >= rank[yp]){
+                    arr[yp] = xp;
+                    rank[xp] += rank[yp];
+                } else {
+                    arr[xp] = yp;
+                    rank[yp] += rank[xp];
+                }
             }
         }
 };

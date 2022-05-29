@@ -26,6 +26,23 @@ def fn3(n, i):
         res += 1 / curr
         curr += 1
     return res
-x = 3
-for i in range(500*x, 10000*x, 500*x):
-    print(i, fn1(i, x) + fn2(i, x) + fn3(i, x))
+
+def fn4(n, i):
+    res = 0
+    curr = math.ceil((n - 2*i) / 4)
+    for i in range(n // 2 + 1):
+        res += 1 / curr
+        curr += 1
+    return res
+
+def fn5(n, i):
+    res = 0
+    curr = math.ceil((n - 2*i) / 4)
+    for i in range(math.ceil((n - 2*i) / 2)):
+        res += 1 / curr
+        curr += 1
+    return res
+
+x = 1
+for i in range(500*x, 1000000*x, 500*x):
+    print(i, fn4(i, x) + 2 * fn5(i, x))
