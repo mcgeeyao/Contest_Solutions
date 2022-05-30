@@ -60,7 +60,7 @@ class DJS:
                 self.rank[yp] += self.rank[xp]
             
             
-            
+# Segment Tree        
 class Segment_TreeNode():
     def __init__(self, lo, hi, s=0, mi=0, ma=0):
         self.lo = lo
@@ -122,11 +122,8 @@ class Segment_Tree():
         self.lazy[(ind << 1) + 1] = True
         self.lazy[(ind << 1) + 2] = True
     
-    def update(self, val, l, r=-1):
-        if r >= 0:
-            self._update(0, l, r, val)
-        else:
-            self._update(0, l, l, val)
+    def update(self, l, r, val):
+        self._update(0, l, r, val)
         
     def _update(self, ind, l, r, val):
         lo = self.Nodes[ind].lo
