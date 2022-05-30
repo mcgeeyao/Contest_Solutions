@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <unordered_map>
 #include <unordered_set>
+#include <limits>
 
 #define ll long long
 #define pii pair<int, int>
@@ -144,29 +145,42 @@ private:
         
         nodes[ind] = new Segment_TreeNode<valueType> (lo, hi, nSum, nMin, nMax);
     }
+
     void push_up(int ind) {
-        nodes[ind]->sum = nodes[(ind << 1) + 1]->sum + nodes[(ind << 1) + 2]->sum;
-        nodes[ind]->min = min(nodes[(ind << 1) + 1]->min, nodes[(ind << 1) + 2]->min);
-        nodes[ind]->max = max(nodes[(ind << 1) + 1]->max, nodes[(ind << 1) + 2]->max);
+        int left = (ind << 1) + 1;
+        int right = (ind << 1) + 2;
+        
+        nodes[ind]->sum = nodes[left]->sum + nodes[right]->sum;
+        nodes[ind]->min = min(nodes[left]->min, nodes[right]->min);
+        nodes[ind]->max = max(nodes[left]->max, nodes[right]->max);
     }
+
     void push_down(int ind) {
         if (!lazy[ind]) return;
-        nodes[(ind << 1) + 1]->sum = nodes[ind]->max * (nodes[(ind << 1) + 1]->hi - nodes[(ind << 1) + 1]->lo + 1);
-        nodes[(ind << 1) + 1]->max = nodes[ind]->max;
-        nodes[(ind << 1) + 1]->min = nodes[ind]->min;
+        int left = (ind << 1) + 1;
+        int right = (ind << 1) + 2;
+
+        nodes[left]->sum = nodes[ind]->max * (nodes[left]->hi - nodes[left]->lo + 1);
+        nodes[left]->max = nodes[ind]->max;
+        nodes[left]->min = nodes[ind]->min;
         
-        nodes[(ind << 1) + 2]->sum = nodes[ind]->max * (nodes[(ind << 1) + 2]->hi - nodes[(ind << 1) + 2]->lo + 1);
-        nodes[(ind << 1) + 2]->max = nodes[ind]->max;
-        nodes[(ind << 1) + 2]->min = nodes[ind]->min;
+        nodes[right]->sum = nodes[ind]->max * (nodes[right]->hi - nodes[right]->lo + 1);
+        nodes[right]->max = nodes[ind]->max;
+        nodes[right]->min = nodes[ind]->min;
         
         lazy[ind] = false;
-        lazy[(ind << 1) + 1] = true;
-        lazy[(ind << 1) + 2] = true;
+        lazy[left] = true;
+        lazy[right] = true;
     }
+
     void _update(int ind,int l,int r,valueType val) {
         int lo = nodes[ind]->lo;
         int hi = nodes[ind]->hi;
+        int left = (ind << 1) + 1;
+        int right = (ind << 1) + 2;
+
         if (r < lo || l > hi) return ;
+
         if (l <= lo && r >= hi) {
             nodes[ind]->sum = val * (hi - lo + 1);
             nodes[ind]->min = val;
@@ -174,12 +188,37 @@ private:
             lazy[ind] = true;
         } else {
             push_down(ind);
-            _update((ind << 1) + 1, l, r, val);
-            _update((ind << 1) + 2, l, r, val);
+            _update(left, l, r, val);
+            _update(right, l, r, val);
             push_up(ind);
         }
     }
+
+    tuple<valueType, valueType, valueType> _query(int ind,int l,int r) {
+        int lo = nodes[ind]->lo;
+        int hi = nodes[ind]->hi;
+        int left = (ind << 1) + 1;
+        int right = (ind << 1) + 2;
+
+        if (r < lo || l > hi)
+            return make_tuple(0, numeric_limits<valueType>::max(), numeric_limits<valueType>::min());
+        if (l <= lo && r >= hi)
+            return make_tuple(nodes[ind]->sum, nodes[ind]->min, nodes[ind]->max);
+            
+        push_down(ind);
+
+        valueType s1, mi1, ma1, s2, mi2, ma2, s, mi, ma;
+        tie(s1, mi1, ma1) = _query(left, l, r);
+        tie(s2, mi2, ma2) = _query(right, l, r);
+        
+        s = s1 + s2;
+        mi = min(mi1, mi2);
+        ma = max(ma1, ma2);
+            
+        return make_tuple(s, mi, ma);
+    }
 public:
+
     Segment_Tree(int num) {
         n = num;
         nodes.resize(4*n);
@@ -187,6 +226,7 @@ public:
         arr.resize(n, 0);
         build(0, 0, n - 1);
     }
+
     Segment_Tree(vector<valueType> _arr) {
         n = _arr.size();
         nodes.resize(4*n);
@@ -197,38 +237,6 @@ public:
 
     void update(int l,int r,valueType val) {
         _update(0, l, r, val);
-    }
-
-    tuple<valueType, valueType, valueType> _query(int ind,int l,int r) {
-        int lo = nodes[ind]->lo;
-        int hi = nodes[ind]->hi;
-        if (r < lo || l > hi)
-            return make_tuple(0, numeric_limits<valueType>::max(), numeric_limits<valueType>::min());
-        if (l <= lo && r >= hi)
-            return make_tuple(nodes[ind]->sum, nodes[ind]->min, nodes[ind]->max);
-            
-        push_down(ind);
-
-        valueType s1, mi1, ma1, s2, mi2, ma2, s, mi, ma;
-        tie(s1, mi1, ma1) = _query((ind << 1) + 1, l, r);
-        tie(s2, mi2, ma2) = _query((ind << 1) + 2, l, r);
-        
-        s = s1 + s2;
-        mi = min(mi1, mi2);
-        ma = max(ma1, ma2);
-            
-        return make_tuple(s, mi, ma);
-    }
-    int myquery(int tar,int  ind=0) {
-        int lo = nodes[ind]->lo;
-        int hi = nodes[ind]->hi;
-        if (nodes[ind]->min > tar) return -1;
-        else if (lo == hi) return lo;
-        push_down(ind);
-        int tmp = myquery(tar, (ind << 1) + 1);
-        if (tmp == -1)
-            tmp = myquery(tar, (ind << 1) + 2);
-        return tmp;
     }
 
     valueType query_max(int l,int r) {return get<2>(_query(0, l, r));}
