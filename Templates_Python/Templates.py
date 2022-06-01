@@ -94,7 +94,7 @@ class Segment_Tree():
         self.build(left, lo, mid)
         self.build(right, mid + 1, hi)
         
-        self.Nodes[ind] = Segment_TreeNode(lo, hi, nSum, nMin, nMax)
+        self.Nodes[ind] = Segment_TreeNode(lo, hi)
         self.push_up(ind)
     
     def push_up(self, ind):
