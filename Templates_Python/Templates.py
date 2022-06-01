@@ -85,9 +85,7 @@ class Segment_Tree():
         
     def build(self, ind, lo, hi):
         if lo == hi:
-            val = self.arr[lo]
-            newNode = Segment_TreeNode(lo, hi, val, val, val)
-            self.Nodes[ind] = newNode
+            self.Nodes[ind] = Segment_TreeNode(lo, hi, self.arr[lo], self.arr[lo], self.arr[lo])
             return
     
         mid = (lo + hi) // 2
@@ -96,31 +94,31 @@ class Segment_Tree():
         self.build(left, lo, mid)
         self.build(right, mid + 1, hi)
         
-        nSum = self.Nodes[left].sum + self.Nodes[right].sum
-        nMin = min(self.Nodes[left].min, self.Nodes[right].min)
-        nMax = max(self.Nodes[left].max, self.Nodes[right].max)
-        
-        newNode = Segment_TreeNode(lo, hi, nSum, nMin, nMax)
-        self.Nodes[ind] = newNode
-        return
+        self.Nodes[ind] = Segment_TreeNode(lo, hi, nSum, nMin, nMax)
+        self.push_up(ind)
+    
     def push_up(self, ind):
-        self.Nodes[ind].sum = self.Nodes[(ind << 1) + 1].sum + self.Nodes[(ind << 1) + 2].sum
-        self.Nodes[ind].min = min(self.Nodes[(ind << 1) + 1].min, self.Nodes[(ind << 1) + 2].min)
-        self.Nodes[ind].max = max(self.Nodes[(ind << 1) + 1].max, self.Nodes[(ind << 1) + 2].max)
+        left = (ind << 1) + 1
+        right = (ind << 1) + 2
+        self.Nodes[ind].sum = self.Nodes[left].sum + self.Nodes[right].sum
+        self.Nodes[ind].min = min(self.Nodes[left].min, self.Nodes[right].min)
+        self.Nodes[ind].max = max(self.Nodes[left].max, self.Nodes[right].max)
         
     def push_down(self, ind):
         if not self.lazy[ind]: return
-        self.Nodes[(ind << 1) + 1].sum = self.Nodes[ind].max * (self.Nodes[(ind << 1) + 1].hi - self.Nodes[(ind << 1) + 1].lo + 1)
-        self.Nodes[(ind << 1) + 1].max = self.Nodes[ind].max
-        self.Nodes[(ind << 1) + 1].min = self.Nodes[ind].min
+        left = (ind << 1) + 1
+        right = (ind << 1) + 2
+        self.Nodes[left].sum = self.Nodes[ind].max * (self.Nodes[left].hi - self.Nodes[left].lo + 1)
+        self.Nodes[left].max = self.Nodes[ind].max
+        self.Nodes[left].min = self.Nodes[ind].min
         
-        self.Nodes[(ind << 1) + 2].sum = self.Nodes[ind].max * (self.Nodes[(ind << 1) + 2].hi - self.Nodes[(ind << 1) + 2].lo + 1)
-        self.Nodes[(ind << 1) + 2].max = self.Nodes[ind].max
-        self.Nodes[(ind << 1) + 2].min = self.Nodes[ind].min
+        self.Nodes[right].sum = self.Nodes[ind].max * (self.Nodes[right].hi - self.Nodes[right].lo + 1)
+        self.Nodes[right].max = self.Nodes[ind].max
+        self.Nodes[right].min = self.Nodes[ind].min
         
         self.lazy[ind] = False
-        self.lazy[(ind << 1) + 1] = True
-        self.lazy[(ind << 1) + 2] = True
+        self.lazy[left] = True
+        self.lazy[right] = True
     
     def update(self, l, r, val):
         self._update(0, l, r, val)
@@ -128,6 +126,8 @@ class Segment_Tree():
     def _update(self, ind, l, r, val):
         lo = self.Nodes[ind].lo
         hi = self.Nodes[ind].hi
+        left = (ind << 1) + 1
+        right = (ind << 1) + 2
         if r < lo or l > hi:
             return 
         if l <= lo and r >= hi:
@@ -137,13 +137,15 @@ class Segment_Tree():
             self.lazy[ind] = True
         else:
             self.push_down(ind)
-            self._update((ind << 1) + 1, l, r, val)
-            self._update((ind << 1) + 2, l, r, val)
+            self._update(left, l, r, val)
+            self._update(right, l, r, val)
             self.push_up(ind)
     
     def _query(self, ind, l, r):
         lo = self.Nodes[ind].lo
         hi = self.Nodes[ind].hi
+        left = (ind << 1) + 1
+        right = (ind << 1) + 2
         if r < lo or l > hi:
             return 0, 10 ** 18, -10 ** 18
         if l <= lo and r >= hi:
@@ -151,14 +153,10 @@ class Segment_Tree():
             
         self.push_down(ind)
 
-        s1, mi1, ma1 = self._query((ind << 1) + 1, l, r)
-        s2, mi2, ma2 = self._query((ind << 1) + 2, l, r)
-        
-        s = s1 + s2
-        mi = min(mi1, mi2)
-        ma = max(ma1, ma2)
+        s1, mi1, ma1 = self._query(left, l, r)
+        s2, mi2, ma2 = self._query(right, l, r)
             
-        return s, mi, ma
+        return s1 + s2, min(mi1, mi2), max(ma1, ma2)
     
     def query_max(self, l, r):
         return self._query(0, l, r)[2]
@@ -195,8 +193,7 @@ class Segment_Tree():
         
     def build(self, ind, lo, hi):
         if lo == hi:
-            val = self.arr[lo]
-            self.Nodes[ind] = val
+            self.Nodes[ind] = self.arr[lo]
             return
     
         mid = (lo + hi) // 2
@@ -207,12 +204,16 @@ class Segment_Tree():
         self.Nodes[ind] = self.Nodes[left] + self.Nodes[right]
         return
     def push_up(self, ind):
-        self.Nodes[ind] = self.Nodes[(ind << 1) + 1] + self.Nodes[(ind << 1) + 2]
+        left = (ind << 1) + 1
+        right = (ind << 1) + 2
+        self.Nodes[ind] = self.Nodes[left] + self.Nodes[right]
         
     def push_down(self, ind):
         if self.lazy[ind] == None: return
-        self.Nodes[(ind << 1) + 1] = self.lazy[ind] * (self.his[(ind << 1) + 1] - self.los[(ind << 1) + 1] + 1)
-        self.Nodes[(ind << 1) + 2] = self.lazy[ind] * (self.his[(ind << 1) + 2] - self.los[(ind << 1) + 2] + 1)
+        left = (ind << 1) + 1
+        right = (ind << 1) + 2
+        self.Nodes[left] = self.lazy[ind] * (self.his[left] - self.los[left] + 1)
+        self.Nodes[right] = self.lazy[ind] * (self.his[right] - self.los[right] + 1)
         self.lazy[ind] = None
     
     def update(self, val, l, r=-1):
@@ -224,6 +225,8 @@ class Segment_Tree():
     def _update(self, ind, l, r, val):
         lo = self.los[ind]
         hi = self.his[ind]
+        left = (ind << 1) + 1
+        right = (ind << 1) + 2
         if r < lo or l > hi:
             return 
         if l <= lo and r >= hi:
@@ -231,13 +234,15 @@ class Segment_Tree():
             self.lazy[ind] = val
         else:
             self.push_down(ind)
-            self._update((ind << 1) + 1, l, r, val)
-            self._update((ind << 1) + 2, l, r, val)
+            self._update(left, l, r, val)
+            self._update(right, l, r, val)
             self.push_up(ind)
     
     def _query(self, ind, l, r):
         lo = self.los[ind]
         hi = self.his[ind]
+        left = (ind << 1) + 1
+        right = (ind << 1) + 2
         if r < lo or l > hi:
             return 0
         if l <= lo and r >= hi:
@@ -245,8 +250,8 @@ class Segment_Tree():
             
         self.push_down(ind)
 
-        s1 = self._query((ind << 1) + 1, l, r)
-        s2 = self._query((ind << 1) + 2, l, r)
+        s1 = self._query(left, l, r)
+        s2 = self._query(right, l, r)
             
         return s1 + s2
     

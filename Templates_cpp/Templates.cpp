@@ -1,3 +1,5 @@
+#pragma GCC optimize("O3,unroll-loops")
+#pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt")
 #include <tuple>
 #include <iostream>
 #include <vector>
@@ -44,8 +46,15 @@ private:
 public:
     BIT(valueType len) {
         n = len;
-        nums = vector<valueType> (len + 1, 0);
-        sums = vector<valueType> (len + 1, 0);
+        nums.resize(n + 1, 0);
+        sums.resize(n + 1, 0);
+    }
+
+    BIT(vector<valueType> arr) {
+        n = arr.size();
+        nums.resize(n + 1, 0);
+        sums.resize(n + 1, 0);
+        for(int i = 0; i < n + 1; ++i) Update(i, arr[i]);
     }
 
     bool Update(valueType ind, valueType val) {
@@ -82,9 +91,9 @@ private:
 
 public:
     DJS(valueType len) {
-        arr = vector<valueType> (len);
-        for (int i = 0; i < len; ++i) arr[i] = i;
-        rank = vector<valueType> (len, 1);
+        arr.resize(len);
+        for (valueType i = 0; i < len; ++i) arr[i] = i;
+        rank.resize(len, 1);
     }
 
     valueType Find(valueType x) {
@@ -115,6 +124,7 @@ struct Segment_TreeNode {
     int lo, hi;
     valueType sum, min, max;
     Segment_TreeNode(int lo, int hi, valueType s, valueType mi, valueType ma): lo(lo), hi(hi), sum(s), min(mi), max(ma) {};
+    Segment_TreeNode(int lo, int hi): lo(lo), hi(hi), sum(0), min(0), max(0) {};
 };
 
 template<typename valueType>         
@@ -127,8 +137,7 @@ private:
 
     void build(int ind, int lo, int hi) {
         if (lo == hi) {
-            valueType val = arr[lo];
-            nodes[ind] = new Segment_TreeNode<valueType> (lo, hi, val, val, val);
+            nodes[ind] = new Segment_TreeNode<valueType> (lo, hi, arr[lo], arr[lo], arr[lo]);
             return;
         }
         int mid = (lo + hi) / 2;
@@ -138,18 +147,14 @@ private:
         build(left, lo, mid);
         build(right, mid + 1, hi);
 
-        valueType nSum, nMin, nMax;
-        nSum = nodes[left]->sum + nodes[right]->sum;
-        nMin = min(nodes[left]->min, nodes[right]->min);
-        nMax = max(nodes[left]->max, nodes[right]->max);
-        
-        nodes[ind] = new Segment_TreeNode<valueType> (lo, hi, nSum, nMin, nMax);
+        nodes[ind] = new Segment_TreeNode<valueType> (lo, hi);
+        push_up(ind);
     }
 
     void push_up(int ind) {
         int left = (ind << 1) + 1;
         int right = (ind << 1) + 2;
-        
+
         nodes[ind]->sum = nodes[left]->sum + nodes[right]->sum;
         nodes[ind]->min = min(nodes[left]->min, nodes[right]->min);
         nodes[ind]->max = max(nodes[left]->max, nodes[right]->max);
@@ -173,7 +178,7 @@ private:
         lazy[right] = true;
     }
 
-    void _update(int ind,int l,int r,valueType val) {
+    void _update(int ind, int l ,int r, valueType val) {
         int lo = nodes[ind]->lo;
         int hi = nodes[ind]->hi;
         int left = (ind << 1) + 1;
@@ -194,7 +199,7 @@ private:
         }
     }
 
-    tuple<valueType, valueType, valueType> _query(int ind,int l,int r) {
+    tuple<valueType, valueType, valueType> _query(int ind, int l, int r) {
         int lo = nodes[ind]->lo;
         int hi = nodes[ind]->hi;
         int left = (ind << 1) + 1;
@@ -207,15 +212,11 @@ private:
             
         push_down(ind);
 
-        valueType s1, mi1, ma1, s2, mi2, ma2, s, mi, ma;
+        valueType s1, mi1, ma1, s2, mi2, ma2;
         tie(s1, mi1, ma1) = _query(left, l, r);
         tie(s2, mi2, ma2) = _query(right, l, r);
-        
-        s = s1 + s2;
-        mi = min(mi1, mi2);
-        ma = max(ma1, ma2);
             
-        return make_tuple(s, mi, ma);
+        return make_tuple(s1 + s2, min(mi1, mi2), max(ma1, ma2));
     }
 public:
 
@@ -235,10 +236,8 @@ public:
         build(0, 0, n - 1);
     }
 
-    void update(int l,int r,valueType val) {
-        _update(0, l, r, val);
-    }
-
+    void update(int l,int r,valueType val) {_update(0, l, r, val);}
+    void update(int l, valueType val) {_update(0, l, l, val);}
     valueType query_max(int l,int r) {return get<2>(_query(0, l, r));}
     valueType query_min(int l,int r) {return get<1>(_query(0, l, r));}
     valueType query_sum(int l,int r) {return get<0>(_query(0, l, r));}

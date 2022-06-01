@@ -43,6 +43,15 @@ def fn5(n, i):
         curr += 1
     return res
 
-x = 20
-for i in range(500*x, 10000*x, 500*x):
-    print(i, fn4(i, x) + 2 * fn5(i, x))
+# x = 20
+# for i in range(500*x, 10000*x, 500*x):
+#     print(i, fn4(i, x) + 2 * fn5(i, x))
+def pow(a, n, mod):
+    if n == 0: return 1
+    if n == 1: return a % mod
+    if n % 2: return a * pow(a * a, n // 2, mod) % mod
+    else: return pow(a * a, n // 2, mod) % mod
+
+
+
+print(2022**2)
