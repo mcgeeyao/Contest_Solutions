@@ -30,13 +30,13 @@ public:
 
     valueType Find(valueType x) {
         if (arr[x] != x)
-            arr[x] = find(arr[x]);
+            arr[x] = Find(arr[x]);
         return arr[x];
     }
 
     valueType Union(valueType x, valueType y) {
-        valueType xp = find(x);
-        valueType yp = find(y);
+        valueType xp = Find(x);
+        valueType yp = Find(y);
         if (xp != yp) {
             if (rank[xp] >= rank[yp]) {
                 arr[yp] = xp;
