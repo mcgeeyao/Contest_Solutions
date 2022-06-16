@@ -67,5 +67,5 @@ def inverse_mod(a, b):
             old_t, t = t, old_t - q * t
     return old_s % b
 
-
-print((188)%37)
+for i in 'CRYPTO':
+    print(bin(ord(i)))

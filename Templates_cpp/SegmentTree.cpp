@@ -133,10 +133,10 @@ public:
         build(0, 0, n - 1);
     }
 
-    void update(int l,int r,valueType val) {_update(0, l, r, val);}
+    void update(int l, int r, valueType val) {_update(0, l, r, val);}
     void update(int l, valueType val) {_update(0, l, l, val);}
-    valueType query_max(int l,int r) {return get<2>(_query(0, l, r));}
-    valueType query_min(int l,int r) {return get<1>(_query(0, l, r));}
-    valueType query_sum(int l,int r) {return get<0>(_query(0, l, r));}
+    valueType query_max(int l, int r) {return get<2>(_query(0, l, r));}
+    valueType query_min(int l, int r) {return get<1>(_query(0, l, r));}
+    valueType query_sum(int l, int r) {return get<0>(_query(0, l, r));}
 
 };
