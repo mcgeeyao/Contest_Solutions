@@ -19,4 +19,7 @@ class DJS:
             else:
                 self.arr[xp] = yp
                 self.rank[yp] += self.rank[xp]
+    
+    def size(self, x):
+        return self.rank[self.find(x)]
             

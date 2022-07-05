@@ -47,4 +47,6 @@ public:
             }
         }
     }
+
+    valueType Size(valueType x) {return rank[Find(x)];}
 };

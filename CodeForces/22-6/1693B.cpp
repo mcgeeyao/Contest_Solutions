@@ -10,35 +10,32 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <limits>
+#include <cassert>
 
 #define ll long long
 #define pii pair<int, int>
 
 using namespace std;
-int res;
-vector<int> dfs(int v, vector<unordered_set<int> > adj, vector<int> l, vector<int> r) {
-    cout << v << ' ' << res << endl;
+ll res;
+pii dfs(int v, vector<unordered_set<int> > &adj, vector<int> &l, vector<int> &r) {
     if (adj[v].empty()) {
         if (l[v]) {
             res++;
-            return (vector<int>) {l[v], r[v]};
+            return make_pair(l[v], r[v]);
         }
-        return (vector<int>) {0, 0};
+        return make_pair(0, 0);
     }
-    int cl = 0, cr = 0;
+    ll cl = 0, cr = 0;
     for (auto u: adj[v]) {
-        vector<int> tmp = dfs(u, adj, l, r);
-        cl += tmp[0];
-        cr += tmp[1];
+        pii tmp = dfs(u, adj, l, r);
+        cl += tmp.first;
+        cr += tmp.second;
     }
     if (cr < l[v]) {
         res++;
-        return (vector<int>) {l[v], r[v]};
+        return make_pair(l[v], r[v]);
     }
-    if (cl > r[v]) {
-        return (vector<int>) {l[v], r[v]};
-    }
-    return (vector<int>) {max(l[v], cl), min(r[v], cr)};
+    return make_pair(l[v], min((ll)r[v], cr));
 }
 
 

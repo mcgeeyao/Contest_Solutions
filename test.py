@@ -66,6 +66,16 @@ def inverse_mod(a, b):
             old_s, s = s, old_s - q * s
             old_t, t = t, old_t - q * t
     return old_s % b
-
-for i in 'CRYPTO':
-    print(bin(ord(i)))
+four = 229+37+69+299+489+389
+pc = 185+39+179+125+180+108
+pan = 80-13+108
+taung = 37+108+123
+gon = 2431+59+909+514
+tol = pc + pan + taung + gon
+print('他們 : ', four)
+print('一人', four//4)
+print('pc : ', pc + four//4)
+print('pan : ', pan + four//4)
+print('taung : ',taung + four//4)
+print('gon : ', gon)
+print('tol : ', tol)
