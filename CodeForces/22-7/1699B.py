@@ -4,7 +4,7 @@ input = sys.stdin.readline
 def sol(n, m):
     res1 = ''
     res2 = ''
-    state = 0
+    state = False
     for i in range(m//2):
         if state:
             res1 += ' 0 1'
@@ -12,8 +12,8 @@ def sol(n, m):
         else:
             res1 += ' 1 0'
             res2 += ' 0 1'
-        state = -(state-1)
-    state = 0
+        state = not state
+    state = False
     for i in range(n//2):
         if state:
             print(res1)
@@ -21,7 +21,7 @@ def sol(n, m):
         else:
             print(res2)
             print(res1)
-        state = -(state-1)
+        state = not state
     
  
 t = int(input())
