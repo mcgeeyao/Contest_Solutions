@@ -72,10 +72,14 @@ pan = 80-13+108
 taung = 37+108+123
 gon = 2431+59+909+514
 tol = pc + pan + taung + gon
-print('他們 : ', four)
-print('一人', four//4)
-print('pc : ', pc + four//4)
-print('pan : ', pan + four//4)
-print('taung : ',taung + four//4)
-print('gon : ', gon)
-print('tol : ', tol)
+# print('他們 : ', four)
+# print('一人', four//4)
+# print('pc : ', pc + four//4)
+# print('pan : ', pan + four//4)
+# print('taung : ',taung + four//4)
+# print('gon : ', gon)
+# print('tol : ', tol)
+with open('a.txt', 'w')as f:
+    f.write('10000\n')
+    for i in range(10000):
+        f.write('1000 1000 5 5 1\n')

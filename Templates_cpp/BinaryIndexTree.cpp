@@ -58,4 +58,6 @@ public:
         }
         return sum;
     }
+
+    valueType Query(valueType left, valueType right) {Query(right) - Query(left - 1);}
 };
