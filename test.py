@@ -79,7 +79,7 @@ tol = pc + pan + taung + gon
 # print('taung : ',taung + four//4)
 # print('gon : ', gon)
 # print('tol : ', tol)
-with open('a.txt', 'w')as f:
-    f.write('10000\n')
-    for i in range(10000):
-        f.write('1000 1000 5 5 1\n')
+# with open('a.txt', 'w')as f:
+#     f.write('10000\n')
+#     for i in range(10000):
+#         f.write('1000 1000 5 5 1\n')
