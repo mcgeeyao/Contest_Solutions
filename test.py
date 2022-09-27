@@ -66,20 +66,34 @@ def inverse_mod(a, b):
             old_s, s = s, old_s - q * s
             old_t, t = t, old_t - q * t
     return old_s % b
-four = 229+37+69+299+489+389
-pc = 185+39+179+125+180+108
-pan = 80-13+108
-taung = 37+108+123
-gon = 2431+59+909+514
-tol = pc + pan + taung + gon
-# print('他們 : ', four)
-# print('一人', four//4)
-# print('pc : ', pc + four//4)
-# print('pan : ', pan + four//4)
-# print('taung : ',taung + four//4)
-# print('gon : ', gon)
-# print('tol : ', tol)
-# with open('a.txt', 'w')as f:
-#     f.write('10000\n')
-#     for i in range(10000):
-#         f.write('1000 1000 5 5 1\n')
+
+pc = 'pc'
+pp = 'pp'
+gon = 'gon'
+dmon = {pc:0, pp:0, gon:0}
+dstr = {pc:'', pp:'', gon:''}
+def add(who, what, how):
+    dmon[who] += how
+    dstr[who] += what + '(' + str(how) + ') + ' 
+
+add(pp, '健保', 150)
+add(pc, '健保', 150)
+add(pp, '噴劑', 260)
+add(pp, '老邁', 175)
+add(pp, '臭臭', 160)
+add(pc, '老邁', 138)
+add(pp, '米澤', 145)
+add(pc, '米澤', 145)
+add(gon, '中華', 919)
+add(pc, '優市', 42)
+add(gon, '洗衣', 160)
+add(pp, '優市', 111)
+add(pp, '麥早', 80)
+add(pc, '麥早', 78)
+add(pp, 'punch', 168)
+add(pc, 'punch', 168)
+
+for i in dmon:
+    print(i, ':', dstr[i][:-2], '=', dmon[i])
+    
+
