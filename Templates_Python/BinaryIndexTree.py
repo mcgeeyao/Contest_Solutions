@@ -7,7 +7,7 @@ class BIT:
 
     def update(self, ind, val):
         ind += 1
-        diff = self.nums[ind]-val
+        diff = self.nums[ind] - val
         self.nums[ind] = val
         while (ind <= self.n):
             self.sums[ind] -= diff
@@ -16,7 +16,7 @@ class BIT:
 
     def query(self, ind):
         ind += 1
-        total=0
+        total = 0
         while (ind > 0):
             total += self.sums[ind]
             ind -= (ind & -ind)
@@ -24,3 +24,6 @@ class BIT:
 
     def sum(self, l, r):
         return self.query(r) - self.query(l-1)
+    
+    def __getitem__(self, ind):
+        return self.nums[ind + 1]

@@ -2,6 +2,8 @@
 
 import math
 import random
+from turtle import st
+import collections
 
 
 def fn1(n, i):
@@ -76,24 +78,56 @@ def add(who, what, how):
     dmon[who] += how
     dstr[who] += what + '(' + str(how) + ') + ' 
 
-add(pp, '健保', 150)
-add(pc, '健保', 150)
-add(pp, '噴劑', 260)
-add(pp, '老邁', 175)
-add(pp, '臭臭', 160)
-add(pc, '老邁', 138)
-add(pp, '米澤', 145)
-add(pc, '米澤', 145)
-add(gon, '中華', 919)
-add(pc, '優市', 42)
-add(gon, '洗衣', 160)
-add(pp, '優市', 111)
-add(pp, '麥早', 80)
-add(pc, '麥早', 78)
-add(pp, 'punch', 168)
-add(pc, 'punch', 168)
+add(gon, '水費', 441)
+add(pc, '711原萃', 50)
+add(pp, '湖州八道', 105)
+add(pc, '湖州八道', 105)
+add(pc, '當歸鴨', 110)
+add(pc, 'UE全聯', 138)
+add(pp, 'UE全聯', 20)
+add(pc, '景新', 105)
+add(pp, '景新', 105)
+add(pc, '老邁', 170)
+add(pp, '老邁', 128)
+add(pc, '鑫吉', 120)
+add(pp, '鑫吉', 120)
+add(pc, '炒飯', 120)
+add(pp, '炒飯', 120)
+add(pc, '湯頂鮮', 160)
+add(pp, '湯頂鮮', 170)
+add(pc, '老邁', 148)
+add(pp, '老邁', 138)
+add(pc, '岡山', 190)
+add(pp, '岡山', 125)
+add(pp, '印吵', 48)
+add(gon, '洗碗', 79)
+add(pp, '銅鑼豆漿', 137)
+add(pp, '虎斑', 65)
+add(pc, '虎斑', 85)
+add(pp, '鯛魚', 90)
+add(pc, '雞排', 90)
+
 
 for i in dmon:
     print(i, ':', dstr[i][:-2], '=', dmon[i])
     
+    
+    
+def solution(arr):
+    d = [0] * 1005
+    for i in arr: d[i] += 1
+    pre = 0
+    res = 1005
+    for i in sorted(set(arr)):
+        if d[i] >= 4: return 0
+        if pre and d[i] >= 2: res = min(res, i - pre)
+        if d[i] >= 2: pre = i
+    if res == 1005: return -1
+    return res
+
+def solution(s):
+    d = {'a': 0, 'b': 1, 'c':2}
+    res = d[s[0]]
+    for i in range(len(s) - 1): res += (d[s[i + 1]] - d[s[i]] + 2) % 3
+    return res
 

@@ -18,6 +18,8 @@ class segmentTree():
             l = (l - l % 2) // 2
             r = (r - r % 2 - 1) // 2
         return tmp
+    def __getitem__(self, n):
+        return self.arr[n + self.n]
     
 class segmentTree():
     def __init__(self, n):
@@ -40,6 +42,9 @@ class segmentTree():
             r = (r - r % 2 - 1) // 2
         return tmp
     
+    def __getitem__(self, n):
+        return self.arr[n + self.n]
+    
 class segmentTree():
     def __init__(self, n):
         self.n = n
@@ -60,4 +65,7 @@ class segmentTree():
             l = (l - l % 2) // 2
             r = (r - r % 2 - 1) // 2
         return tmp
+    
+    def __getitem__(self, n):
+        return self.arr[n + self.n]
     
