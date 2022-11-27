@@ -1,19 +1,12 @@
 import sys
 input = sys.stdin.readline
 mod = 998244353
-def sqrt(n):
-    l = 0
-    r = n
-    while l <= r:
-        mid = (l + r) // 2
-        if mid * mid <= n: l = mid + 1
-        else: r = mid - 1
-    return r
 
 def isPrm(n):
-    for i in range(2, sqrt(n) + 1):
-        if (n % i) == 0:
-            return False
+    i = 2
+    while i * i <= n:
+        if (n % i) == 0: return False
+        i += 1
     return True
 
 def sol(n, m):
