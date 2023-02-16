@@ -21,7 +21,7 @@ def sol(arr, n):
         else:
             break
     if l <= r:
-        print(l, r)
+        print(l + 1, r + 1)
     else:
         print(-1)
  

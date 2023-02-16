@@ -1,6 +1,8 @@
+# 2169. Nested Ranges Count
+# TLE for pypy
+
 import sys
 input = sys.stdin.readline
-# Nested Ranges Count
 class BIT:
     def __init__(self, n):
         self.n = n
@@ -60,8 +62,8 @@ def sol(arr, n):
                 l = mid + 1
             else:
                 r = mid - 1
-                
         res2[sortx[i][1]] = bit.sum(l, n - 1)
+        
         bit.update(d[sortx[i][1]], 1)
     for i in res1:
         print(i, end=' ')

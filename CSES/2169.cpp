@@ -1,3 +1,5 @@
+// 2169. Nested Ranges Count
+// Accept
 
 
 #pragma GCC optimize("O3,unroll-loops")
@@ -81,7 +83,9 @@ void sol(vector<pii> arr, int n) {
         sortx[i] = MP(arr[i].F, i);
         sorty[i] = MP(arr[i].S, i);
     }
-    sort(sortx.begin(), sortx.end(), [&](pii &x1, pii &x2){return (arr[x1.S].F < arr[x2.S].F || arr[x1.S].F == arr[x2.S].F && arr[x1.S].S > arr[x2.S].S);} );
+    sort(sortx.begin(), sortx.end(), [&arr](pii &x1, pii &x2){
+        return (arr[x1.S].F < arr[x2.S].F || arr[x1.S].F == arr[x2.S].F && arr[x1.S].S > arr[x2.S].S);
+        } );
     sort(sorty.begin(), sorty.end());
 
     for (int i = 0; i < n; ++i) {
@@ -109,7 +113,7 @@ void sol(vector<pii> arr, int n) {
             else r = mid - 1;
         }    
         res2[idx] = bit.Query(l, n - 1);
-        
+
         bit.Update(d[idx], 1);
     }
     for (int i = 0; i < n; ++i) {
@@ -126,10 +130,7 @@ int main() {
     cout.sync_with_stdio(false);
     cin.tie(nullptr);
 
-    int n, k, res, x, y;
-    ll l;
-    char c;
-    string s;
+    int n, res, x, y;
     cin >> n;
     vector<pii> arr(n);
     for (int i = 0; i < n; ++i) {

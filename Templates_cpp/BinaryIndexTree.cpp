@@ -59,5 +59,5 @@ public:
         return sum;
     }
 
-    valueType Query(valueType left, valueType right) {Query(right) - Query(left - 1);}
+    valueType Query(valueType left, valueType right) {return Query(right) - Query(left - 1);}
 };

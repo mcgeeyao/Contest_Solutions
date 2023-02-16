@@ -1,6 +1,7 @@
 import sys
 input = sys.stdin.readline
 def sol(mx, mn):
+    print((mx-mn)*2)
     for i in range(mx, mn, -1):
         print(i, end=' ')
     for i in range(mn, mx):
