@@ -1,4 +1,4 @@
-# 2169. Nested Ranges Count
+# 2169. Nested Ranges Check
 # TLE for pypy
     
 def sol(arr, n):
